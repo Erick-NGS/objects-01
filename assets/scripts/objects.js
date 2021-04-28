@@ -27,20 +27,31 @@ const renderMovies = (filterItem = '') => {
 
   movieSearchRes.forEach(movie => {
     const movieEl = document.createElement('li');
+
     /*
     in order to check if a property exists or not in an object, its an option to use the 'in' keyword:
     if('info' in movies){...}
     or, use a more default validation
     if(movie.info !== undefined){...}
     */
+
     const { info, ...otherInfo } = movie;
+
     // reminder for the 'this' keyword: it always refer to whats calling the function, for example movie.formatTitle, movie is whats calling the function, hence is the 'this' keyword on the function
     // let text = `${movie.formatTitle()} - `;
 
     // Using bind, we can connect the 'this' in the function with the right object, when using destructuring in this case, so that it does not refer to the window object
     let { formatTitle } = movie;
-    formatTitle = formatTitle.bind(movie);
-    let text = `${formatTitle()} - `;
+
+    /*
+  - .bind() => Prepares the function for a future execution, which means that when used, it needs to be the value in a variable, so that when called, executes said function
+  - .call() => Similar to bind(), as in what it does to 'this', but executes the function ASAP, instead of preparing it for a future execution
+  - .apply() => Similar to call(), but instead of taking a list of arguments besides the 'this' one, it takes only one more, which an array for the arguments to be passed
+*/
+
+    // formatTitle = formatTitle.bind(movie);
+
+    let text = `${formatTitle.call(movie)} - `;
     for (const key in info) {
       if (key !== 'title') {
         text += `${key}: ${info[key]}`;
