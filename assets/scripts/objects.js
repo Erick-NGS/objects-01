@@ -47,13 +47,13 @@ const renderMovies = (filterItem = '') => {
   - .bind() => Prepares the function for a future execution, which means that when used, it needs to be the value in a variable, so that when called, executes said function
   - .call() => Similar to bind(), as in what it does to 'this', but executes the function ASAP, instead of preparing it for a future execution
   - .apply() => Similar to call(), but instead of taking a list of arguments besides the 'this' one, it takes only one more, which an array for the arguments to be passed
-*/
+    */
 
     // formatTitle = formatTitle.bind(movie);
 
     let text = `${formatTitle.call(movie)} - `;
     for (const key in info) {
-      if (key !== 'title') {
+      if (key !== 'title' && key !== '_title') {
         text += `${key}: ${info[key]}`;
       }
     }
@@ -76,12 +76,25 @@ const addMovieHandler = () => {
     return;
 
   const newMovie = {
-    info: { title, [extraName]: extraValue },
+    info: {
+      set title(val) {
+        if (val.trim === '') {
+          return;
+        }
+        this._title = val;
+      },
+      get title() {
+        return this._title;
+      },
+      [extraName]: extraValue,
+    },
     formatTitle() {
       return this.info.title.toUpperCase();
     },
     id: Math.random().toString(),
   };
+
+  newMovie.info.title = title;
 
   movies.push(newMovie);
   renderMovies();
