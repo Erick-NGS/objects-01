@@ -34,9 +34,13 @@ const renderMovies = (filterItem = '') => {
     if(movie.info !== undefined){...}
     */
     const { info, ...otherInfo } = movie;
-    // const { formatTitle } = movie;
     // reminder for the 'this' keyword: it always refer to whats calling the function, for example movie.formatTitle, movie is whats calling the function, hence is the 'this' keyword on the function
-    let text = `${movie.formatTitle()} - `;
+    // let text = `${movie.formatTitle()} - `;
+
+    // Using bind, we can connect the 'this' in the function with the right object, when using destructuring in this case, so that it does not refer to the window object
+    let { formatTitle } = movie;
+    formatTitle = formatTitle.bind(movie);
+    let text = `${formatTitle()} - `;
     for (const key in info) {
       if (key !== 'title') {
         text += `${key}: ${info[key]}`;
@@ -62,7 +66,7 @@ const addMovieHandler = () => {
 
   const newMovie = {
     info: { title, [extraName]: extraValue },
-    formatTitle: function () {
+    formatTitle() {
       return this.info.title.toUpperCase();
     },
     id: Math.random().toString(),
