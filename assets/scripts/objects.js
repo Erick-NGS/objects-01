@@ -27,6 +27,12 @@ const renderMovies = (filterItem = '') => {
 
   movieSearchRes.forEach(movie => {
     const movieEl = document.createElement('li');
+    /*
+    in order to check if a property exists or not in an object, its an option to use the 'in' keyword:
+    if('info' in movies){...}
+    or, use a more default validation
+    if(movie.info !== undefined){...}
+    */
     const { info, ...otherInfo } = movie;
     let text = `${info.title} - `;
     for (const key in info) {
