@@ -34,7 +34,9 @@ const renderMovies = (filterItem = '') => {
     if(movie.info !== undefined){...}
     */
     const { info, ...otherInfo } = movie;
-    let text = `${info.title} - `;
+    // const { formatTitle } = movie;
+    // reminder for the 'this' keyword: it always refer to whats calling the function, for example movie.formatTitle, movie is whats calling the function, hence is the 'this' keyword on the function
+    let text = `${movie.formatTitle()} - `;
     for (const key in info) {
       if (key !== 'title') {
         text += `${key}: ${info[key]}`;
@@ -60,6 +62,9 @@ const addMovieHandler = () => {
 
   const newMovie = {
     info: { title, [extraName]: extraValue },
+    formatTitle: function () {
+      return this.info.title.toUpperCase();
+    },
     id: Math.random().toString(),
   };
 
